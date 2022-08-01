@@ -1,4 +1,7 @@
-﻿# Create a log file for debugging
+﻿<#
+This is a blurb and man, why does every script turn from 10-15 lines to a megalith like this...
+#>
+# Create a log file for debugging
 Start-Transcript -Append C:\Support\Logs\WindowsSetupLog.txt
 
 #Set the Computer name
@@ -78,8 +81,9 @@ powercfg.exe -change -standby-timeout-ac 0
 powercfg.exe -change -standby-timeout-dc 0
 powercfg.exe -change -hibernate-timeout-ac 0
 powercfg.exe -change -hibernate-timeout-dc 0
+
 #Set British Time Zone
-Set-TimeZone -Id "British Standard Time"
+Set-TimeZone -Id "GMT Standard Time"
 
 #Enable .NET Framework
 Write-Host -ForegroundColor Green "Enable .NET Framework"
@@ -95,8 +99,8 @@ Write-Host -ForegroundColor Green "Disabling NBT-NS"
 $regkey = "HKLM:SYSTEM\CurrentControlSet\services\NetBT\Parameters\Interfaces"
 Get-ChildItem $regkey |foreach { Set-ItemProperty -Path "$regkey\$($_.pschildname)" -Name NetbiosOptions -Value 2 -Verbose}
 
-Write-Host -ForegroundColor Green "Enabling SMB signing as always"
 #Enable SMB signing as 'always'
+Write-Host -ForegroundColor Green "Enabling SMB signing as always"
 $Parameters = @{
     RequireSecuritySignature = $True
     EnableSecuritySignature = $True
@@ -172,11 +176,9 @@ Write-Host -ForegroundColor Green "Install Chocolatey to automate basic program 
 Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 	choco install chocolatey-core.extension -y
 
-#Install Java
-    choco install jre8 -y
 
-#Install Firefox
-    choco install firefox -y
+#Install Citrix
+    choco install citrix-receiver -y
 
 #Install Chrome
     choco install googlechrome -y --ignore-checksums
@@ -184,8 +186,11 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManage
 #Install Adobe Reader
     choco install adobereader -y
 
-#Install 7-zip
-    choco install 7zip -y
+#Install Slack
+    choco install slack -y
+
+#Install Teams-MachineWide
+    choco install microsoft-teams.install -y
 
 #Enable RDP
 Write-Host -ForegroundColor Green "Enable RDP"
